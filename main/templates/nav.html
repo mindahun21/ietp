@@ -1,0 +1,18 @@
+<nav class="w-full h-16 flex justify-center bg-gray-200 px-4 py-2 shadow-lg shadow-blue-100">
+  <div class="flex justify-between items-center w-full lg:max-w-[1024px] lg:m-auto">
+    <div class="flex justify-start gap-2">
+      <a class="text-black text-3xl font-extrabold hover:bg-gray-200 px-4 py-2 rounded-lg" href="/">Home</a>
+    </div>
+    <div class="flex justify-end gap-4">
+      {% if user.is_authenticated %}
+      
+
+      <a class="btn btn-ghost text-black text-lg" href="/logout" >Logout</a>
+      
+      {% else %}
+      <a href="/login" class="btn btn-ghost text-black text-lg">Login</a>
+      {%  endif %}
+    </div>
+  </div>
+
+</nav>

@@ -1,0 +1,117 @@
+{% extends 'base.html' %} 
+{% load custom_filters %}
+
+{% block title %}
+  {% if is_edit %} Edit {{ model_name }} {% else %} Add {{ model_name }} {% endif %}
+{% endblock %} 
+
+{% block content %}
+<div id="add-edit-model" class="w-full min-h-full">
+  <div class="mt-10 flex flex-col justify-center">
+    <div class="flex flex-col mx-2 md:mx-auto w-full md:max-w-[600px] gap-4 bg-white rounded-xl">
+      <p class="text-blue-500 text-xl font-bold w-full text-center bg-blue-100 py-3 border-b-2 border-b-blue-500">
+        {% if is_edit %} Edit {{ model_name }} {% else %} Add New {{ model_name }} {% endif %}
+      </p>
+      <div class="flex flex-col gap-4 px-4 pb-20">
+        
+        <!-- Success or Error Messages -->
+        {% if messages %}
+        <div>
+          {% for message in messages %}
+          <div 
+            class="text-center p-2 rounded-md border text-xl {% if message.tags == 'success' %}text-green-500 bg-green-100 border-green-500{% else %}text-red-500 bg-red-100 border-red-500{% endif %}">
+            {{ message }}
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+        {% if form.non_field_errors %}
+         <div 
+            class="text-center p-2 rounded-md border text-xl text-red-500 bg-red-100 border-red-500">
+            {{form.non_field_errors}}
+          </div>
+        {% endif %}
+        
+        <!-- Form -->
+        <form 
+          class="flex flex-col gap-4 w-full" 
+          id="add-edit-model-form" 
+          action="{{ action_url }}" 
+          method="post" autocomplete="off" 
+        >
+          {% csrf_token %}
+          
+          <!-- Loop Through Fields -->
+          {% for field in form %}
+          {% if field.field.widget.attrs.type == 'json' %}
+            <div x-data="{
+              json_data: {{ form.instance|get_json_field:field.name|default:'{}'|safe }}, 
+              newKey: '', 
+              newValue: '', 
+              errors: {}, 
+              addEntry() {
+                if (!this.newKey || !this.newValue) {
+                  this.errors.new = 'Both key and value are required.';
+                  return;
+                }
+                if (this.json_data.hasOwnProperty(this.newKey)) {
+                  this.errors.new = `Duplicate entry for '${this.newKey}'.`;
+                  return;
+                }
+                this.json_data[this.newKey] = this.newValue;
+                this.newKey = '';
+                this.newValue = '';
+                this.errors = {};
+                console.log(JSON.stringify(this.json_data));
+              },
+              removeEntry(keyToRemove) {
+                delete this.json_data[keyToRemove];
+              }
+            }">
+
+              <div class="flex flex-col gap-4">
+                <p class="text-black text-lg">{{ field.label }}</p>
+                <template x-for="(val, key) in json_data" :key="key">
+                  <div class="flex gap-4">
+                    <span x-text="key" class="bg-gray-100 px-3 py-2 me-2 min-w-40"></span>
+                    <input type="text" x-model="json_data[key]" class="flex-grow" />
+                    <button type="button" @click="removeEntry(key)" class="text-red-400 px-3 py-2 hover:bg-red-100">Remove</button>
+                  </div>
+                </template>
+
+                <div class="flex gap-3">
+                  <input type="text" x-model="newKey" placeholder="Key" class="flex-grow px-3 py-2 border" />
+                  <input type="text" x-model="newValue" placeholder="Value" class="flex-grow px-3 py-2 border" />
+                  <button type="button" @click="addEntry()" class="text-blue-400 py-2 px-3 hover:bg-blue-100 min-w-20">Add</button>
+                </div>
+                <p x-text="errors.new" class="text-red-500"></p>
+              </div>
+              <input type="hidden" :name="'{{ field.name }}'" :id="'{{ field.id_for_label }}'" :value="JSON.stringify(json_data)" />
+            </div>
+          {% else %}
+            <div class="flex flex-col gap-2 w-full">
+              <div class="flex gap-2">
+                <div class="w-40 text-black font-semibold">
+                  {{ field.label }}:
+                </div>
+                <div class="flex-grow">
+                  {{ field }}
+                </div>
+              </div>
+              <div class="flex flex-col text-red-500 ms-44">
+                {{ field.errors }}
+              </div>
+            </div>
+          {% endif %}
+          {% endfor %}
+          
+          <!-- Submit Button -->
+          <button type="submit" class="px-5 py-3 bg-blue-400 text-white font-bold rounded-md hover:bg-blue-200">
+            {% if is_edit %} Update {% else %} Add {% endif %} {{ model_name }}
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

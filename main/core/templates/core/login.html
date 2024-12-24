@@ -1,0 +1,30 @@
+{% extends 'base.html' %} 
+{% block title %}Login{% endblock %} 
+{% block content %}
+<div class="mt-10 md:mt-40 flex flex-col justify-center">
+  <div class="flex flex-col mx-2 md:mx-auto my-auto w-full sm:max-w-[400px] gap-4 bg-white rounded-xl">
+    <p class="text-blue-500 text-xl font-bold w-full text-center bg-blue-100 py-3 border-b-2 border-b-blue-500">Login to your account</p>
+    <div class="flex flex-col gap-4 px-4 pb-20">
+      <!-- Display error messages -->
+      {% if error %}
+        <div class="text-red-500 text-center">
+            <p>{{ error }}</p>
+        </div>
+      {% endif %}
+
+      <form class="flex flex-col gap-4" action="{% url 'login-template' %}" method="post" autocomplete="off">
+        {% csrf_token %}
+        <div class="flex flex-col gap-1">
+          <label for="login-username" class="text-blue-300 text-2xl">Username</label>
+          <input type="text" name="username" id="login-username" autocomplete="new-username" class="outline-none border-2 border-gray-200 active:border-blue-300 px-2 py-1 text-2xl text-black">
+        </div>
+        <div class="flex flex-col gap-1">
+          <label for="login-password" class="text-blue-300 text-2xl">Password</label>
+          <input type="password" name="password" id="login-password" autocomplete="new-password" class="outline-none border-2 border-gray-200 active:border-blue-300 px-2 py-1 text-2xl text-black">
+        </div>
+        <button type="submit" class="px-5 py-3 bg-blue-400 text-white font-bold rounded-md hover:bg-blue-200 mt-10">Login</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

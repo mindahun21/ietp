@@ -1,0 +1,5 @@
+<div 
+  data-success="{{ success|yesno:'true,false' }}"
+  class="text-center p-2 rounded-md border text-xl{% if success %}text-green-500 bg-green-100 border-green-500{% else %}text-red-500 bg-red-100 border-red-500{% endif %}">
+  {{ message }}
+</div>

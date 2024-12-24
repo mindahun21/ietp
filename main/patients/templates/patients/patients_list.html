@@ -1,0 +1,110 @@
+<div class="flex flex-col gap-2 w-full border min-h-full">
+  <table class="table-auto w-full border-collapse bg-white rounded-lg">
+    <thead>
+      <tr class="bg-blue-500 text-white text-left">
+        <th class="px-4 py-2">#</th>
+        <th class="px-4 py-2">Name</th>
+        <th class="px-4 py-2">Phone Number</th>
+        <th class="px-4 py-2">Email</th>
+        <th class="px-4 py-2">Gender</th>
+        <th class="px-4 py-2">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for patient in patients %}
+        <tr class="border-b hover:bg-blue-100">
+          <td class="px-4 py-2">
+            <a href="{% url 'patient-detail' patient.id %}" class="">
+              {{ start_index|add:forloop.counter }}
+            </a>
+          </td>
+          <td class="px-4 py-2">
+            <a href="{% url 'patient-detail' patient.id %}" class="block w-full h-full font-bold">
+              {{ patient.full_name }}
+            </a>
+          </td>
+          <td class="px-4 py-2">
+            <a href="{% url 'patient-detail' patient.id %}" class="block w-full h-full">
+              {{ patient.phone_number }}
+            </a>
+          </td>
+          <td class="px-4 py-2">
+            <a href="{% url 'patient-detail' patient.id %}" class="block w-full h-full">
+              {{ patient.email }}
+            </a>
+          </td>
+          <td class="px-4 py-2">
+            <a href="{% url 'patient-detail' patient.id %}" class="block w-full h-full">
+              {{ patient.gender }}
+            </a>
+          </td>
+          <td class="px-4 py-2">
+            <a href="{% url 'patient-detail' patient.id %}" class="block w-full h-full">
+              {% if patient.is_active %}
+                <span class="text-green-600 font-semibold">Currently in the hospital</span>
+              {% else %}
+                <span class="text-red-600 font-semibold">Not in the hospital</span>
+              {% endif %}
+            </a>
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="6" class="text-center py-4 text-gray-500">No patients found</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+<!-- Pagination Controls -->
+<div class="flex justify-center mt-4">
+  <nav>
+    <ul class="pagination flex gap-2">
+      {% if patients.has_previous %}
+        <li>
+          <a href="?page=1" 
+             class="px-3 py-2 bg-blue-200 rounded hover:bg-blue-300"
+             hx-target="#patient-list"
+             hx-get="?page=1">
+            First
+          </a>
+        </li>
+        <li>
+          <a href="?page={{ patients.previous_page_number }}" 
+             class="px-3 py-2 bg-blue-200 rounded hover:bg-blue-300"
+             hx-target="#patient-list"
+             hx-get="?page={{ patients.previous_page_number }}">
+            Previous
+          </a>
+        </li>
+      {% endif %}
+
+      <li>
+        <span class="px-3 py-2 bg-blue-100 rounded">Page {{ patients.number }} of {{ patients.paginator.num_pages }}</span>
+      </li>
+
+      {% if patients.has_next %}
+        <li>
+          <a href="?{{request.GET.urlencode}}&page={{ patients.next_page_number }}" 
+             class="px-3 py-2 bg-blue-200 rounded hover:bg-blue-300"
+             hx-on="click: event.preventDefault()"
+             hx-target="#patient-list"
+             hx-get="?{{request.GET.urlencode}}&page={{ patients.next_page_number }}">
+            Next
+          </a>
+        </li>
+        <li>
+          <a href="?{{request.GET.urlencode}}&page={{ patients.paginator.num_pages }}" 
+             class="px-3 py-2 bg-blue-200 rounded hover:bg-blue-300"
+             hx-on="click: event.preventDefault()"
+             hx-target="#patient-list"
+             hx-get="?{{request.GET.urlencode}}&page={{ patients.paginator.num_pages }}">
+            Last
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+</div>

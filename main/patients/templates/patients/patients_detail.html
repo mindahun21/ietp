@@ -1,0 +1,271 @@
+{% extends 'base.html' %}
+{% block title %}Patient - {{ patient.full_name }}{% endblock %}
+{% block content %}
+<div 
+  class="container mx-auto p-6 w-full min-h-full"
+  x-data="{activeTab: 'basic-info'}"
+>
+    <!-- Patient Details Card -->
+    <div class="flex text-2xl font-bold text-blue-600 border-b pb-2 mb-4 h-16" >
+      <button
+          class="text-blue-500 hover:bg-blue-200 h-full items-center px-4 border-r border-r-gray-50"
+          :class="{
+              'bg-blue-600 hover:bg-blue-700 text-white': activeTab === 'basic-info',
+              'bg-gray-200': activeTab !== 'basic-info'
+          }"
+          @click="activeTab = 'basic-info'"
+      >
+          Basic Info
+      </button>
+
+      <button
+          class="text-blue-500 hover:bg-blue-200 h-full items-center px-4 border-r border-r-gray-50"
+          :class="{
+              'bg-blue-600 hover:bg-blue-700 text-white': activeTab === 'medical-history',
+              'bg-gray-200': activeTab !== 'medical-history'
+          }"
+          @click="activeTab = 'medical-history'"
+      >
+          Medical History
+        </button>
+
+      <button
+          class="text-blue-500 hover:bg-blue-200 h-full items-center px-4 border-r border-r-gray-50"
+          :class="{
+              'bg-blue-600 hover:bg-blue-700 text-white': activeTab === 'cases',
+              'bg-gray-200': activeTab !== 'cases'
+          }"
+          @click="activeTab = 'cases'"
+      >
+          Cases
+      </button>
+
+
+    </div>
+    <div class="bg-white shadow-md rounded-lg p-6 w-full" x-show="activeTab === 'basic-info'">
+        
+
+        <!-- Patient Information Table -->
+         <div class="flex gap-4 items-center pb-3">
+           <h2 class="text-lg font-semibold text-gray-700 mb-4">Personal Information</h2>
+            <a href="/patients/edit/{{ patient.id }}" class="text-blue-500 p-4 rounded-full hover:text-blue-700 hover:bg-blue-100">
+              {% heroicon_outline "pencil" %}
+            </a>
+            <a href="{% url 'assign-nurses' patient.id %}" class="px-3 py-2 hover:bg-blue-200 text-blue-600">Assign nurses</a>
+         </div>
+        <div class="w-full border border-blue-300">
+
+          <table class="min-w-full table-auto border-collapse">
+              <thead class="bg-blue-500">
+                  <tr>
+                      <th class="text-left px-4 py-2 border-b font-medium text-gray-600 w-60">Field</th>
+                      <th class="text-left px-4 py-2 border-b font-medium text-gray-600">Details</th>
+                  </tr>
+              </thead>
+              <tbody class="text-gray-700">
+                  <tr class="border-b border-blue-200 hover:bg-blue-100">
+                      <td class="px-4 py-2"><strong>Full Name</strong></td>
+                      <td class="px-4 py-2">{{ patient.full_name }}</td>
+                  </tr>
+                  <tr class="border-b border-blue-200 hover:bg-blue-100">
+                      <td class="px-4 py-2"><strong>Gender</strong></td>
+                      <td class="px-4 py-2">{{ patient.gender|title }}</td>
+                  </tr>
+                  <tr class="border-b border-blue-200 hover:bg-blue-100">
+                      <td class="px-4 py-2"><strong>Age</strong></td>
+                      <td class="px-4 py-2">{{ patient.age }}</td>
+                  </tr>
+                  <tr class="border-b border-blue-200 hover:bg-blue-100">
+                      <td class="px-4 py-2"><strong>Date of Birth</strong></td>
+                      <td class="px-4 py-2">{{ patient.date_of_birth }}</td>
+                  </tr>
+                  <tr class="border-b border-blue-200 hover:bg-blue-100">
+                      <td class="px-4 py-2"><strong>Marital Status</strong></td>
+                      <td class="px-4 py-2">{{ patient.marital_status|title }}</td>
+                  </tr>
+                  <tr class="border-b border-blue-200 hover:bg-blue-100">
+                      <td class="px-4 py-2"><strong>Address</strong></td>
+                      <td class="px-4 py-2">{{ patient.address }}</td>
+                  </tr>
+                  <tr class="border-b border-blue-200 hover:bg-blue-100">
+                      <td class="px-4 py-2"><strong>Email</strong></td>
+                      <td class="px-4 py-2">{{ patient.email }}</td>
+                  </tr>
+                  <tr class="border-b border-blue-200 hover:bg-blue-100">
+                      <td class="px-4 py-2"><strong>Phone Number</strong></td>
+                      <td class="px-4 py-2">{{ patient.phone_number }}</td>
+                  </tr>
+              </tbody>
+          </table>
+        </div>
+
+        <!-- Emergency Contact Table -->
+        {% if patient.emergency_contact %}
+        <h2 class="text-lg font-semibold text-gray-700 mt-8 mb-4">Emergency Contact</h2>
+        <table class="min-w-full table-auto border-collapse">
+            <thead class="bg-blue-500">
+                <tr>
+                    <th class="text-left px-4 py-2 border-b font-medium text-gray-600 w-60">Field</th>
+                    <th class="text-left px-4 py-2 border-b font-medium text-gray-600">Details</th>
+                </tr>
+            </thead>
+            <tbody class="text-gray-700" >
+                {% for key, value in patient.emergency_contact.items %}
+                <tr class="border-b border-blue-200 hover:bg-blue-100">
+                    <td class="px-4 py-2 "><strong>{{ key|title }}</strong></td>
+                    <td class="px-4 py-2 ">{{ value }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+
+        <!-- Insurance Information Table -->
+        {% if patient.insurance %}
+        <div class="flex gap-4 items-center pb-3">
+           <h2 class="text-lg font-semibold text-gray-700 mt-8 mb-4">Insurance Information</h2>
+            <a href="/patients/update-insurance-info/{{ patient.insurance.id }}" class="text-blue-500 p-4 rounded-full hover:text-blue-700 hover:bg-blue-100">
+              {% heroicon_outline "pencil" %}
+            </a>
+         </div>
+        <table class="min-w-full table-auto border-collapse">
+            <thead class="bg-blue-500">
+                <tr>
+                    <th class="text-left px-4 py-2 border-b font-medium text-gray-600 w-60">Field</th>
+                    <th class="text-left px-4 py-2 border-b font-medium text-gray-600">Details</th>
+                </tr>
+            </thead>
+            <tbody class="text-gray-700">
+                <tr class="border-b border-blue-200 hover:bg-blue-100">
+                    <td class="px-4 py-2 border-b"><strong>Provider Name</strong></td>
+                    <td class="px-4 py-2 border-b">{{ patient.insurance.provider_name }}</td>
+                </tr>
+                <tr class="border-b border-blue-200 hover:bg-blue-100">
+                    <td class="px-4 py-2 border-b"><strong>Policy Number</strong></td>
+                    <td class="px-4 py-2 border-b">{{ patient.insurance.policy_number }}</td>
+                </tr>
+                <tr class="border-b border-blue-200 hover:bg-blue-100">
+                    <td class="px-4 py-2 border-b"><strong>Coverage Start Date</strong></td>
+                    <td class="px-4 py-2 border-b">{{ patient.insurance.coverage_start_date }}</td>
+                </tr>
+                <tr class="border-b border-blue-200 hover:bg-blue-100">
+                    <td class="px-4 py-2 border-b"><strong>Coverage End Date</strong></td>
+                    <td class="px-4 py-2 border-b">
+                        {% if patient.insurance.coverage_end_date %}
+                            {{ patient.insurance.coverage_end_date }}
+                        {% else %}
+                            Ongoing
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr class="border-b border-blue-200 hover:bg-blue-100">
+                    <td class="px-4 py-2 border-b"><strong>Coverage Details</strong></td>
+                    <td class="px-4 py-2 border-b">{{ patient.insurance.coverage_details }}</td>
+                </tr>
+            </tbody>
+        </table>
+        {% else %}
+        <div class="flex h-full justify-start gap-10 items-center mt-10">
+          <p class="text-2xl text-blue-500">No insurance information for this Patient</p>
+          <a href="{% url 'create-insurance-info' patient.id %}" class="btn btn-primary">Add Insurance Information</a>
+        </div>
+        {% endif %}
+
+        <!-- Active Status -->
+        <div class="mt-8">
+            <p class="text-gray-600">
+                <strong>Status:</strong>
+                {% if patient.is_active %}
+                <span class="text-green-600 font-semibold">Currently in the treatment</span>
+                {% else %}
+                <span class="text-red-600 font-semibold">Currently not in the hospital</span>
+                {% endif %}
+            </p>
+        </div>
+        <div class="flex gap-4 items-center pb-3">
+          <p class="text-3xl font-bold">Assigned nurses</p>
+          {% for nurse in patient.assigned_nurses_list %}
+          <p class="text-3xl">{{nurse.username}}</p>
+          {% endfor %}
+        </div>
+    </div>
+    <!-- medical history Tab -->
+    <div class="bg-white shadow-md rounded-lg p-6 w-full" x-show="activeTab === 'medical-history'" >
+      {% if patient.medical_history %}
+      <div class="flex gap-4 items-center pb-3">
+           <h2 class="text-lg font-semibold text-gray-700 mt-1 mb-4" >Medical History</h2>
+            <a href="/patients/update-medical-history/{{ patient.medical_history.id }}" class="text-blue-500 p-4 rounded-full hover:text-blue-700 hover:bg-blue-100">
+              {% heroicon_outline "pencil" %}
+            </a>
+         </div>
+        <table class="min-w-full table-auto border-collapse">
+            <thead class="bg-blue-500">
+                <tr>
+                    <th class="text-left px-4 py-2 border-b font-medium text-gray-600 w-60">Attribute</th>
+                    <th class="text-left px-4 py-2 border-b font-medium text-gray-600">Details</th>
+                </tr>
+            </thead>
+            <tbody class="text-gray-700">
+                {% for key, value in patient.medical_history.history.items %}
+
+                <tr class="border-b border-blue-200 hover:bg-blue-100">
+                    <td class="px-4 py-2 "><strong>{{ key|title }}</strong></td>
+                    <td class="px-4 py-2 ">{{ value }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+      {% else %}
+      <div class="flex h-full justify-start gap-10 items-center">
+        <p class="text-2xl text-blue-500">No medical history recorded for this Patient</p>
+        <a href="{% url 'create-medical-history' patient.id %}" class="btn btn-primary">Add Medical History</a>
+      </div>
+      {% endif %}
+    </div>
+
+        <!-- Cases tab -->
+    <div class="bg-white shadow-md rounded-lg p-6 w-full" x-show="activeTab === 'cases'" >
+      <div class="flex gap-4 items-center pb-3" x-data="{activeCaseTab: 'list'}">
+
+        <div class="flex flex-col gap-4 w-full relative" x-show="activeCaseTab === 'list'">
+          <div class="flex gap-4 justify-between items-center mb-4 ">
+              <h2 class="text-lg font-semibold text-gray-700 mt-1 mb-4">Cases</h2>
+              <button 
+                hx-get="{% url 'create-new-case' patient.id %}" 
+                hx-target="#cases-table" 
+                hx-swap="innerHTML"
+                class="px-4 py-2 bg-blue-500 text-white"
+                >Create New Case</button>
+          </div>
+          <table class="min-w-full table-auto border-collapse ">
+              <thead class="bg-blue-500">
+                  <tr>
+                      <th class="text-left px-4 py-2 border-b font-medium text-gray-600 w-60">id</th>
+                      <th class="text-left px-4 py-2 border-b font-medium text-gray-600">start date</th>
+                      <th class="text-left px-4 py-2 border-b font-medium text-gray-600">end date</th>
+                      <th class="text-left px-4 py-2 border-b font-medium text-gray-600">status</th>
+                      <th class="text-left px-4 py-2 border-b font-medium text-gray-600"></th>
+                  </tr>
+              </thead>
+              <tbody id="cases-table" class="text-gray-700 ">
+                  {% include 'partials/cases_table.html' %}
+              </tbody>
+          </table>
+        </div>
+        <div class="flex flex-col gap-4 w-full relative" x-show="activeCaseTab === 'case-detail'" >
+          <div class="flex gap-4 border-b border-blue-300 justify-between items-center">
+            <button class="hover:bg-blue-100 px-4 py-4 rounded-full text-black" @click="activeCaseTab='list'">{% heroicon_outline "arrow-left" %}</button>
+            
+          </div>
+          <!-- case detail -->
+          <div id="case-detail"></div>
+          
+        </div>
+      </div>
+
+        
+    </div>
+
+
+</div>
+{% endblock %}

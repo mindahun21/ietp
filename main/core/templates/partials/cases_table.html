@@ -1,0 +1,20 @@
+{% for item in patient.cases_ordered.all %}
+<tr class="border-b border-blue-200 hover:bg-blue-100" >
+    <td class="px-4 py-2 "><strong>{{ item.id }}</strong></td>
+    <td class="px-4 py-2 ">{{ item.start_date }}</td>
+    <td class="px-4 py-2 ">{{ item.end_date }}</td>
+    <td class="px-4 py-2 ">{{ item.status }}</td>
+    <td class="px-4 py-2 ">
+      <a class="text-blue-600 text-xl" 
+      @click="activeCaseTab='case-detail'" 
+      href="{% url 'case-detail' item.id %}" 
+      hx-get="{% url 'case-detail' item.id %}"
+      hx-target="#case-detail"
+      hx-swap="innerHTML"
+
+      >show more</a></td>
+</tr>
+{% endfor %}
+<div class="absolute top-10 right-0 text-white bg-gray-700 py-2">
+{{message}}
+</div>

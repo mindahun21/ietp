@@ -1,0 +1,49 @@
+{% load static tailwind_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+       {% tailwind_css %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="{% block description %}Default description for HMS{% endblock %}" />
+        <meta name="keywords" content="{% block keywords %}hospital, patient, management, healthcare{% endblock %}" />
+    <title>{% block title %}wellcome{% endblock %}-HMS</title>
+        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+          <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+  </head>
+  <body class="bg-gray-50">
+    {% if messages %}
+        <div class="flex flex-col gap-2 fixed bottom-2 right-2 p-2 bg-gray-800 text-white rounded-lg shadow-lg">
+            {% for message in messages %}
+                <div >
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <div class="flex flex-col min-h-screen w-full">
+          {% include 'nav.html' %} 
+      <div class="flex h-full w-full">
+        {% if user.is_authenticated %}
+        <div class="flex flex-col bg-gray-100 min-h-[100vh] w-[200px] pt-2 overflow-y-auto">
+          <a href="/" class="hover:bg-gray-300 text-black h-10 ps-4 ">Patients list </a>
+          <a href="/add-staff" class="hover:bg-gray-300 text-black h-10 ps-4 ">Register new Staff</a>
+          <a href="/patients/add" class="hover:bg-gray-300 text-black h-10 ps-4 ">Register new Patient</a>
+           
+        </div>
+        {% endif %}
+        <div class="flex flex-col flex-grow overflow-y-auto">
+          <div class="flex flex-col flex-grow overflow-y-auto min-h-full">
+
+            {%  block content %}{% endblock %} 
+          </div>
+
+          {% include 'footer.html' %}
+        </div>
+      </div>
+    </div>
+
+    <script src="{% static 'js/base.js' %}"></script>
+  </body>
+</html>

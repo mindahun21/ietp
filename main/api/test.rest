@@ -1,0 +1,48 @@
+### Login Test
+POST http://127.0.0.1:8000/api/login/
+Content-Type: application/json
+
+{
+  "username": "nurse1",
+  "password": "password"
+}
+
+### 
+
+### Logout Test
+POST http://127.0.0.1:8000/api/logout/
+Content-Type: application/json
+Authorization: Token 7ebe8dd767a988b44e472488acd3881505ac6e01
+
+
+
+### Patient list View (patients assigned to the nurse)
+GET http://127.0.0.1:8000/api/patients/
+Content-Type: application/json
+Authorization: Token 7ebe8dd767a988b44e472488acd3881505ac6e01
+
+### Cases for patient View 
+GET http://127.0.0.1:8000/api/patient/8/case/
+Content-Type: application/json
+Authorization: Token 7ebe8dd767a988b44e472488acd3881505ac6e01
+
+### Cases for patient View 
+GET http://127.0.0.1:8000/api/case/16/checkups/
+Content-Type: application/json
+Authorization: Token 7ebe8dd767a988b44e472488acd3881505ac6e01
+
+
+### Cases for patient View 
+POST http://127.0.0.1:8000/api/case/16/add-checkup/
+Content-Type: application/json
+Authorization: Token 7ebe8dd767a988b44e472488acd3881505ac6e01
+
+{
+    "bp": "120/80",
+    "pr": "72",
+    "rr": "18",
+    "t": "98.6",
+    "input": "Oral intake 500ml",
+    "output": "Urine output 300ml",
+    "additional_information": "Patient is stable"
+}

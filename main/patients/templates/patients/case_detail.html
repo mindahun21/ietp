@@ -1,0 +1,180 @@
+<div class="w-full flex flex-col gap-4" x-data="{caseTab: 'details'}">
+  <div class="flex justify-between" >
+    <div class="flex gap-4 items-center">
+      <p class="text-blue-500 text-3xl font-bold">Status {{case.status}}</p>
+      <p class="text-blue-500 text-xl">Start Date:   {{case.start_date}}</p>
+
+      <p class="text-blue-500 text-xl">End Date:   {{case.end_date}}</p>
+    </div>
+    <div class="flex gap-4 items-center">
+      <button @click="caseTab='details'" 
+        class=" px-4 py-4 text-black h-14" 
+        :class="{'bg-blue-500 hover:bg-blue-400 text-white': caseTab==='details','bg-gray-200': caseTab!=='details'}"
+        > details 
+      </button>
+      <button 
+        class=" px-4 py-4 text-black h-14 flex gap-2" 
+        @click="caseTab = 'checkups'"
+        :class="{'bg-blue-500 hover:bg-blue-400 text-white': caseTab==='checkups','bg-gray-200': caseTab!=='checkups'}"
+
+      >
+        {% heroicon_outline "check" %} checkups 
+      </button>
+      <button 
+        class=" px-4 py-4 text-black h-14 flex gap-2" 
+        @click="caseTab = 'treatments'"
+        :class="{'bg-blue-500 hover:bg-blue-400 text-white': caseTab==='treatments','bg-gray-200': caseTab!=='treatments'}"
+
+      >
+         Treatments 
+      </button>
+    </div>
+    {% if case.status == 'open' %}
+    <a href="{% url 'close-case' case.id %}" class="btn btn-primary">Close Case</a>
+    {% endif %}
+  </div>
+  <div x-show="caseTab === 'details'" >
+    <!-- initial diagnosis -->
+    <div class="flex gap-4 items-center">
+        <h2 class="text-2xl font-semibold text-gray-700 mt-1 mb-4" >Initial Diagnosis</h2>
+        <a href="{% url 'update-initial-diagnosis' case.id %}" class="text-blue-500 p-4 rounded-full hover:text-blue-700 hover:bg-blue-100">
+          {% heroicon_outline "pencil" %}
+        </a>
+    </div>
+    <table class="min-w-full table-auto border-collapse">
+        <thead class="bg-blue-500">
+            <tr>
+                <th class="text-left px-4 py-2 border-b font-medium text-gray-600 w-80">Attribute</th>
+                <th class="text-left px-4 py-2 border-b font-medium text-gray-600">Details</th>
+            </tr>
+        </thead>
+        <tbody class="text-gray-700">
+            {% for key, value in case.initial_diagnosis.items %}
+  
+            <tr class="border-b border-blue-200 hover:bg-blue-100">
+                <td class="px-4 py-2 "><strong>{{ key|title }}</strong></td>
+                <td class="px-4 py-2 ">{{ value }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <!-- treatment Plan -->
+    <div class="flex gap-4 items-center">
+        <h2 class="text-2xl font-semibold text-gray-700 mt-1 mb-4" >Treatment Plan</h2>
+        <a href="{% url 'update-treatment-plan' case.id %}" class="text-blue-500 p-4 rounded-full hover:text-blue-700 hover:bg-blue-100">
+          {% heroicon_outline "pencil" %}
+        </a>
+    </div>
+    <table class="min-w-full table-auto border-collapse">
+        <thead class="bg-blue-500">
+            <tr>
+                <th class="text-left px-4 py-2 border-b font-medium text-gray-600 w-80">Attribute</th>
+                <th class="text-left px-4 py-2 border-b font-medium text-gray-600">Details</th>
+            </tr>
+        </thead>
+        <tbody class="text-gray-700">
+            {% for key, value in case.treatment_plan.items %}
+  
+            <tr class="border-b border-blue-200 hover:bg-blue-100">
+                <td class="px-4 py-2 "><strong>{{ key|title }}</strong></td>
+                <td class="px-4 py-2 ">{{ value }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+  
+    <!-- Closure Information -->
+    <div class="flex gap-4 items-center">
+      <h2 class="text-2xl font-semibold text-gray-700 mt-1 mb-4" >Cloasure Information</h2>
+      <a href="{% url 'update-closure-info' case.id %}" class="text-blue-500 p-4 rounded-full hover:text-blue-700 hover:bg-blue-100">
+        {% heroicon_outline "pencil" %}
+      </a>
+    </div>
+    <table class="min-w-full table-auto border-collapse">
+        <thead class="bg-blue-500">
+            <tr>
+                <th class="text-left px-4 py-2 border-b font-medium text-gray-600 w-80">Attribute</th>
+                <th class="text-left px-4 py-2 border-b font-medium text-gray-600">Details</th>
+            </tr>
+        </thead>
+        <tbody class="text-gray-700">
+            {% for key, value in case.closure_info.items %}
+  
+            <tr class="border-b border-blue-200 hover:bg-blue-100">
+                <td class="px-4 py-2 "><strong>{{ key|title }}</strong></td>
+                <td class="px-4 py-2 ">{{ value }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+  
+    <!-- Notes -->
+     <div class="flex gap-4 items-center">
+      <h2 class="text-2xl font-semibold text-gray-700 mt-1 mb-4" >Notes</h2>
+      <a href="{% url 'update-notes' case.id %}" class="text-blue-500 p-4 rounded-full hover:text-blue-700 hover:bg-blue-100">
+        {% heroicon_outline "pencil" %}
+      </a>
+  
+    </div>
+      <p class="p-4 text-lg text-gray-800 border border-blue-300">
+        {{case.notes}}
+      </p>
+
+  </div>
+  <!-- check up --> 
+  <div x-show="caseTab === 'checkups'" class="w-full flex flex-col">
+    <div class="flex gap-4 items-center">
+      <h2 class="text-2xl font-semibold text-gray-700 mt-1 mb-4" >Checkups</h2>
+      <a href="{% url 'add-check-up' case.id %}" class="text-blue-500 p-4 rounded-full hover:text-blue-700 hover:bg-blue-100">
+        {% heroicon_outline "pencil-square" %}
+      </a>
+    </div>
+    <table class="min-w-full table-auto border-collapse">
+        <thead class="bg-blue-500">
+            <tr>
+                <th class="text-left px-4 py-2 border-b font-medium text-gray-600">id</th>
+                <th class="text-left px-4 py-2 border-b font-medium text-gray-600">nurse</th>
+                <th class="text-left px-4 py-2 border-b font-medium text-gray-600">date</th>
+                <th class="text-left px-4 py-2 border-b font-medium text-gray-600">time</th>
+                <th class="text-left px-4 py-2 border-b font-medium text-gray-600">BP</th>
+                <th class="text-left px-4 py-2 border-b font-medium text-gray-600">PR</th>
+                <th class="text-left px-4 py-2 border-b font-medium text-gray-600">RR</th>
+                <th class="text-left px-4 py-2 border-b font-medium text-gray-600">temp</th>
+                <th class="text-left px-4 py-2 border-b font-medium text-gray-600">input</th>
+                <th class="text-left px-4 py-2 border-b font-medium text-gray-600">output</th>
+                <th class="text-left px-4 py-2 border-b font-medium text-gray-600 flex-grow">additional info</th>
+            </tr>
+        </thead>
+        <tbody class="text-gray-700">
+            {% for checkup in case.checkups_ordered %}
+
+            <tr class="border-b border-blue-200 hover:bg-blue-100">
+                <td class="px-4 py-2 "><strong>{{ checkup.id }}</strong></td>
+                <td class="px-4 py-2 ">{{checkup.nurse}}</td>
+                <td class="px-4 py-2 ">{{checkup.date}}</td>
+                <td class="px-4 py-2 ">{{checkup.time}}</td>
+                <td class="px-4 py-2 ">{{checkup.bp}}</td>
+                <td class="px-4 py-2 ">{{checkup.pr}}</td>
+                <td class="px-4 py-2 ">{{checkup.rr}}</td>
+                <td class="px-4 py-2 ">{{checkup.t}}</td>
+                <td class="px-4 py-2 ">{{checkup.input}}</td>
+                <td class="px-4 py-2 ">{{checkup.output}}</td>
+                <td class="px-4 py-2 ">{{checkup.additional_information}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+  </div>
+  <div x-show="caseTab === 'treatments'" class="w-full flex flex-col border-t-2 border-t-blue-400 pt-4">
+
+    <div class="flex justify-between pb-4 items-center">
+      <p class="text-3xl font-bold text-blue-400">Treatments</p>
+      <a href="{% url 'add-treatment' case.id %}" class="flex gap-2 text-blue-400 text-2xl px-2 py-3 hover:bg-blue-100" >{% heroicon_outline 'pencil-square' %} Add New Treatment</a>
+    </div>
+    <div id="treatment-list" class="flex flex-col gap-2">
+      {% include 'patients/treatment_list.html' with case=case %}
+    </div>
+    
+    
+  </div>
+</div>

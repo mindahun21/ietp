@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "daisyui": "^4.12.14",
+    "prettier": "^3.4.2",
+    "prettier-plugin-django": "^0.5.18"
+  },
+  "dependencies": {}
+}
