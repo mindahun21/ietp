@@ -2415,6 +2415,10 @@ details.collapse summary::-webkit-details-marker {
   gap: 2rem;
 }
 
+.justify-self-end {
+  justify-self: end;
+}
+
 .overflow-y-auto {
   overflow-y: auto;
 }

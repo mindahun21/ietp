@@ -3,10 +3,10 @@ from django.core.management.base import BaseCommand
 from faker import Faker
 from django.contrib.auth import get_user_model
 from patients.models import (
-    Patient, Insurance
+    Patient, Insurance, Bed
 )
 from core.models import (
-    Bed, Case, MedicalHistory, Treatment,
+    Case, MedicalHistory, Treatment,
     LabResult, Immunization, CheckUp
 )
 
@@ -125,7 +125,7 @@ class Command(BaseCommand):
                 Bed.objects.create(
                     room_number=room_number,
                     bed_number=bed_number,
-                    status=random.choice(['available', 'occupied', 'maintenance']),
+                    status='available',
                 )
 
         print("Fake data generated successfully!")

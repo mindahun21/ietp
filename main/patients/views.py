@@ -233,6 +233,11 @@ class CaseDetailView(DetailView):
           )
         case_obj.checkups_ordered = case_obj.checkups.order_by('-date', '-time')
         return case_obj
+    
+    # def get(self, request, *args, **kwargs):
+    #     case = self.get_object()
+    #     context = self.get_context_data(object=case)
+    #     return render(request, self.template_name, context)
 
 
 def CloseCaseView(request, id):
@@ -240,7 +245,14 @@ def CloseCaseView(request, id):
     case.close_case()
     patient = get_object_or_404(Patient, id=case.patient.id)
     patient.is_active = False
+    patient.assigned_nurses.clear()
+    if patient.bed:
+        bed = patient.bed
+        bed.status = 'available'
+        bed.save()
+        patient.bed = None
     patient.save()
+
     messages.success(request, 'Case Closed Successfully.')
     return redirect('patient-detail', id=case.patient.id)
 
@@ -416,3 +428,39 @@ class AssignNursesView(UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('patient-detail', kwargs={'id': self.object.id})
+    
+    
+from .forms import AssignBedForm
+from django.views.generic.edit import FormView
+
+class AssignBedView(FormView):
+    template_name = 'core/add_edit_model.html'
+    form_class = AssignBedForm
+
+    def get_object(self):
+        return get_object_or_404(Patient, id=self.kwargs.get('id'))
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_edit'] = True
+        context['model_name'] = 'Assign Bed'
+        context['action_url'] = '/patients/assign-bed/' + str(self.kwargs.get('id')) + '/'
+        return context
+    def form_valid(self, form):
+        patient = self.get_object()
+        new_bed = form.cleaned_data['bed']
+        if patient.bed:
+            patient.bed.status = 'available'
+            patient.bed.save()
+        
+        patient.bed = new_bed
+        patient.save()
+
+        new_bed.status = 'occupied'
+        new_bed.save()
+
+        messages.success(self.request, 'Bed Assigned Successfully.')
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('patient-detail', kwargs={'id': self.kwargs.get('id')})

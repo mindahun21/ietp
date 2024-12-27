@@ -20,6 +20,8 @@ urlpatterns = [
   path('add-check-up/<int:id>/', views.CreateCheckUpView.as_view(), name='add-check-up'),
   path('add-treatment/<int:id>/', views.CreateTreatmentView.as_view(), name='add-treatment'),
   path('assign-nurses/<int:id>/', views.AssignNursesView.as_view(), name='assign-nurses'),
+  path('assign-bed/<int:id>/', views.AssignBedView.as_view(), name='assign-bed'),
+
 ]
 
 # TODO: create edit for medical history

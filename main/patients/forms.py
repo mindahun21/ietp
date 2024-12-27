@@ -1,5 +1,5 @@
 from django import forms
-from .models import Patient
+from .models import Patient, Bed
 
 class AddEditPatientForm(forms.ModelForm):
     class Meta:
@@ -172,6 +172,17 @@ class AssignNursesForm(forms.ModelForm):
 
 
 
+class AssignBedForm(forms.ModelForm):
+    class Meta:
+        model = Patient
+        fields = ['bed']
+        widgets = {
+                'bed': forms.Select(attrs={'class': 'form-control w-full'}),
+            }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['bed'].queryset = Bed.objects.filter(status='available')
 
 
 

@@ -46,12 +46,25 @@
         
 
         <!-- Patient Information Table -->
-         <div class="flex gap-4 items-center pb-3">
+         <div class="flex gap-4 items-center pb-3 w-full">
            <h2 class="text-lg font-semibold text-gray-700 mb-4">Personal Information</h2>
             <a href="/patients/edit/{{ patient.id }}" class="text-blue-500 p-4 rounded-full hover:text-blue-700 hover:bg-blue-100">
               {% heroicon_outline "pencil" %}
             </a>
-            <a href="{% url 'assign-nurses' patient.id %}" class="px-3 py-2 hover:bg-blue-200 text-blue-600">Assign nurses</a>
+              {% if patient.is_active %}
+                <a href="{% url 'assign-nurses' patient.id %}" class="px-3 py-2 hover:bg-blue-200 text-blue-600">Assign nurses</a>
+              {% endif %}
+
+            <div class="justify-self-end flex-grow flex justify-end">
+              {% if patient.is_active %}
+                {% if patient.bed %}
+                <p class="flex gap-2 text-blue-400 font-bold text-2xl">Currently:  {{patient.bed}}</p>
+                {% else %}
+                  <a href="{% url 'assign-bed' patient.id %}" class="px-3 py-2 hover:bg-blue-200 text-blue-600">Assign bed</a>
+                {% endif %}
+              {% endif %}
+
+            </div>
          </div>
         <div class="w-full border border-blue-300">
 
@@ -182,12 +195,16 @@
                 {% endif %}
             </p>
         </div>
-        <div class="flex gap-4 items-center pb-3">
-          <p class="text-3xl font-bold">Assigned nurses</p>
-          {% for nurse in patient.assigned_nurses_list %}
-          <p class="text-3xl">{{nurse.username}}</p>
-          {% endfor %}
-        </div>
+        {% if patient.is_active %}
+          <div class="flex gap-4 items-center pb-3">
+            <p class="text-3xl font-bold">Assigned nurses</p>
+            {% if patient.is_active %}
+              {% for nurse in patient.assigned_nurses_list %}
+              <p class="text-3xl">{{nurse.username}}</p>
+              {% endfor %}
+            {% endif %}
+          </div>
+        {% endif %}
     </div>
     <!-- medical history Tab -->
     <div class="bg-white shadow-md rounded-lg p-6 w-full" x-show="activeTab === 'medical-history'" >
@@ -230,12 +247,14 @@
         <div class="flex flex-col gap-4 w-full relative" x-show="activeCaseTab === 'list'">
           <div class="flex gap-4 justify-between items-center mb-4 ">
               <h2 class="text-lg font-semibold text-gray-700 mt-1 mb-4">Cases</h2>
+              {% if not patient.is_active %}
               <button 
                 hx-get="{% url 'create-new-case' patient.id %}" 
                 hx-target="#cases-table" 
                 hx-swap="innerHTML"
                 class="px-4 py-2 bg-blue-500 text-white"
                 >Create New Case</button>
+              {% endif %}
           </div>
           <table class="min-w-full table-auto border-collapse ">
               <thead class="bg-blue-500">
@@ -258,7 +277,8 @@
             
           </div>
           <!-- case detail -->
-          <div id="case-detail"></div>
+          <div id="case-detail">
+          </div>
           
         </div>
       </div>
@@ -269,3 +289,4 @@
 
 </div>
 {% endblock %}
+

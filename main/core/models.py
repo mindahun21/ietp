@@ -1,4 +1,3 @@
-import uuid
 from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import AbstractUser
@@ -22,25 +21,7 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.username
     
-class Bed(models.Model):
-    STATUS =[
-        ('available', 'available'),
-        ('occupied', 'occupied'),
-        ('maintenance', 'maintenance'),
-    ]
-    uuid = models.CharField(max_length=100, unique=True, editable=False, blank=True) 
-    room_number = models.IntegerField()
-    bed_number = models.IntegerField()
-    status = models.CharField(max_length=20, choices=STATUS, default='available')
-    asigned_to = models.ForeignKey(Patient, on_delete=models.SET_NULL, null=True, blank=True)
 
-    def save(self, *args, **kwargs):
-        if not self.uuid:  
-            self.uuid = str(uuid.uuid4()) 
-        super().save(*args, **kwargs)  
-
-    def __str__(self):
-            return f"Bed {self.bed_number} in Room {self.room_number}"
     
 
 class Case(models.Model):

@@ -1,5 +1,8 @@
 from django.db import models
 from django.conf import settings
+import uuid
+
+
 
 class Patient(models.Model):
     MARITAL_STATUS = [
@@ -30,9 +33,29 @@ class Patient(models.Model):
         related_name='patients', 
         blank=True,
     )
+    bed = models.OneToOneField('Bed', on_delete=models.SET_NULL, null=True, blank=True, related_name='patient')
     
     def __str__(self):
         return f"{self.full_name}"
+    
+class Bed(models.Model):
+    STATUS =[
+        ('available', 'available'),
+        ('occupied', 'occupied'),
+        ('maintenance', 'maintenance'),
+    ]
+    uuid = models.CharField(max_length=100, unique=True, editable=False, blank=True) 
+    room_number = models.IntegerField()
+    bed_number = models.IntegerField()
+    status = models.CharField(max_length=20, choices=STATUS, default='available')
+
+    def save(self, *args, **kwargs):
+        if not self.uuid:  
+            self.uuid = str(uuid.uuid4()) 
+        super().save(*args, **kwargs)  
+
+    def __str__(self):
+            return f"Bed {self.bed_number} in Room {self.room_number}"
 
 class Insurance(models.Model):
     patient = models.OneToOneField(Patient, on_delete=models.CASCADE, related_name="insurance")
