@@ -27,7 +27,7 @@ Authorization: Token 7ebe8dd767a988b44e472488acd3881505ac6e01
 
 
 ### Active Case for patient View  -- id is the id of the patient
-GET http://127.0.0.1:8000/api/patient/8/case/
+GET http://127.0.0.1:8000/api/patient/1/case/
 Content-Type: application/json
 Authorization: Token 7ebe8dd767a988b44e472488acd3881505ac6e01
 

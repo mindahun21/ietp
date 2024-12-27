@@ -68,8 +68,13 @@ class CaseDetailView(APIView):
         try:
             patient = Patient.objects.get(id=id)
             case = patient.cases.filter(status='open').first()
-            serializer = CaseDetailSerializer(case)
-            return Response(serializer.data)
+            case_serializer = CaseDetailSerializer(case)
+            patient_serializer = PatientSerializer(patient)
+            data = {
+                'patient': patient_serializer.data,
+                'case': case_serializer.data
+            }
+            return Response(data)
         except Case.DoesNotExist:
             return Response({"detail": "Case not found"}, status=status.HTTP_404_NOT_FOUND)
         
