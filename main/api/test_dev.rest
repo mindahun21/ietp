@@ -1,5 +1,5 @@
 ### Login Test
-POST https://milkiasyeheyis.tech/api/login/
+POST http://127.0.0.1:8000/api/login/
 Content-Type: application/json
 
 {
@@ -10,37 +10,42 @@ Content-Type: application/json
 ### 
 
 ### Logout Test
-POST https://milkiasyeheyis.tech/api/logout/
+POST http://127.0.0.1:8000/api/logout/
 Content-Type: application/json
-Authorization: Token 7ebe8dd767a988b44e472488acd3881505ac6e01
+Authorization: Token 8f1f0abc079a82869eb09391ee6b3a71b94cae8f
 
 
 
 
 ### Patient list View (patients assigned to the nurse)
-GET https://milkiasyeheyis.tech/api/patients/
+GET http://127.0.0.1:8000/api/patients/
 Content-Type: application/json
-Authorization: Token 8dc9f8a821446750ce8a424386acd45d1e57d051
+Authorization: Token 8f1f0abc079a82869eb09391ee6b3a71b94cae8f
 // the token is from the login response 
 
 
 
 
 ### Active Case for patient View  -- id is the id of the patient
-GET https://milkiasyeheyis.tech/api/patient/4/case/
+GET http://127.0.0.1:8000/api/patient/6/case/
 Content-Type: application/json
-Authorization: Token 8dc9f8a821446750ce8a424386acd45d1e57d051
+Authorization: Token 8f1f0abc079a82869eb09391ee6b3a71b94cae8f
 
 ### checkups for specific case --id is the id of the case
-GET https://milkiasyeheyis.tech/api/case/16/checkups/
+GET http://127.0.0.1:8000/api/case/16/checkups/
 Content-Type: application/json
-Authorization: Token 8dc9f8a821446750ce8a424386acd45d1e57d051
+Authorization: Token 8f1f0abc079a82869eb09391ee6b3a71b94cae8f
+
+###
+GET http://127.0.0.1:8000/api/bed/3/
+Content-Type: application/json
+Authorization: Token 8f1f0abc079a82869eb09391ee6b3a71b94cae8f
 
 
 ### adding the new checkup for the specific case -- id is the id of the case
-POST https://milkiasyeheyis.tech/api/case/16/add-checkup/
+POST http://127.0.0.1:8000/api/case/16/add-checkup/
 Content-Type: application/json
-Authorization: Token 8dc9f8a821446750ce8a424386acd45d1e57d051
+Authorization: Token 8f1f0abc079a82869eb09391ee6b3a71b94cae8f
 
 {
     "bp": "120/80",

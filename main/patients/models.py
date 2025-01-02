@@ -67,3 +67,9 @@ class Insurance(models.Model):
 
     def __str__(self):
         return f"{self.provider_name} - {self.policy_number}"
+    
+class Notification(models.Model):
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='notifications')
+    message = models.TextField()
+
+    # TODO: add many tomay field with nurses

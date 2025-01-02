@@ -29,12 +29,6 @@ class CustomLoginView(APIView):
 
         return Response({"token": token.key,"detail":"Authenticated Successfuly"}, status=status.HTTP_200_OK)
     
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.authtoken.models import Token
-
 class LogoutView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -115,9 +109,17 @@ class AddCheckUpView(APIView):
 
 
 
-
-
-
+from patients.models import Bed
+from .serializers import BedSerializer
+class BedDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, id):
+        try:
+            bed = Bed.objects.get(id=id)
+            serializer = BedSerializer(bed)
+            return Response(serializer.data)
+        except Bed.DoesNotExist:
+            return Response({"detail": "Bed not found"}, status=status.HTTP_404_NOT_FOUND)
 
 
 

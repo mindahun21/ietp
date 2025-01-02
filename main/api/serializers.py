@@ -77,3 +77,17 @@ class AddCheckUpSerializer(serializers.ModelSerializer):
         model = CheckUp
         fields = ['case', 'nurse', 'bp', 'pr', 'rr', 't', 'input', 'output', 'additional_information']
         read_only_fields = ['date', 'time']
+
+from patients.models import Bed
+class BedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Bed
+        fields = ['id', 'bed_number', 'room_number']
+
+
+class PatientDetailSerializer(serializers.ModelSerializer):
+  bed = BedSerializer(read_only=True)
+
+  class Meta:
+      model= Patient
+      fields = ['id', 'full_name', 'address', 'email', 'phone_number', 'marital_status', 'gender', 'age','date_of_birth','emergency_contact', 'is_active', 'bed' ]

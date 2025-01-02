@@ -50,11 +50,6 @@ ENV/
 # JetBrains
 *.iml
 
-# Django migrations
-main/api/migrations/
-main/beds/migrations/
-main/core/migrations/
-main/patients/migrations/
 
 # PyCharm settings
 .idea/

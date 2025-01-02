@@ -9,4 +9,5 @@ urlpatterns = [
   path('patient/<int:id>/case/', views.CaseDetailView.as_view(), name='api-case-detail'),
   path('case/<int:id>/checkups/', views.CheckupsView.as_view(), name='checkup-detail'),
   path('case/<int:id>/add-checkup/', views.AddCheckUpView.as_view(), name='add-checkup'),
+  path('bed/<int:id>/', views.BedDetailView.as_view(), name='bed-detail'),
 ]
