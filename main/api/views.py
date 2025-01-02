@@ -115,7 +115,14 @@ class BedDetailView(APIView):
     permission_classes = [IsAuthenticated]
     def get(self, request, id):
         try:
-            bed = Bed.objects.get(id=id)
+            patient = Patient.objects.get(id=id)
+
+            bed = patient.bed
+            
+            if bed is None:
+                return Response({"detail": "Bed not found"}, status=status.HTTP_404_NOT_FOUND)
+
+            # Serialize the bed object
             serializer = BedSerializer(bed)
             return Response(serializer.data)
         except Bed.DoesNotExist:
