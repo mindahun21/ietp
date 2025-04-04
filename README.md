@@ -1,7 +1,7 @@
 # Smart Hospital Bed for Patients
 
 ## Overview
-The "Smart Hospital Bed for Patients" is an innovative healthcare solution developed by a multidisciplinary team of 10 students at Addis Ababa Science and Technology University during the Integrated Engineering Team Project (IETP4115, Dec 2024). This project aims to enhance patient mobility, comfort, and safety while reducing caregiver workload, aligning with Sustainable Development Goal 3 (Good Health and Well-Being). It integrates advanced hardware, sensors, and a Flutter-based mobile app for real-time monitoring and control.
+The "Smart Hospital Bed for Patients" is an innovative healthcare solution developed by a multidisciplinary team of 10 students at Addis Ababa Science and Technology University during the Integrated Engineering Team Project. This project aims to enhance patient mobility, comfort, and safety while reducing caregiver workload, aligning with Sustainable Development Goal 3 (Good Health and Well-Being). It integrates advanced hardware, sensors, and a Flutter-based mobile app for real-time monitoring and control.
 
 ## Features
 - **Adjustable Positioning**: Transitions between lying, sitting, and chair modes using stepper and servo motors for patient comfort and mobility.
