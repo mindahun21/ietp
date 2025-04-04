@@ -1,0 +1,35 @@
+name: ietp_new
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  google_fonts: ^6.2.1
+  http: ^1.2.2
+  intl: ^0.20.1
+  shared_preferences: ^2.3.4
+  
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_launcher_icons: ^0.13.1
+  flutter_lints: ^5.0.0
+  
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - "assets/images/app_icon.png"
+
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/app_icon.png"

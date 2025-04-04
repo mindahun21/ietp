@@ -1,0 +1,5 @@
+package com.example.ietp_new
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity()
