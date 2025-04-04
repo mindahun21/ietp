@@ -1,7 +1,7 @@
 # Smart Hospital Bed Mobile App
 
 ## Overview
-This Flutter-based mobile application is part of the "Smart Hospital Bed for Patients" project, developed during an Integrated Engineering Team Project at Addis Ababa Science and Technology University (Dec 2024). The app enables caregivers to remotely monitor and control a smart hospital bed, enhancing patient care and mobility while aligning with Sustainable Development Goal 3 (Good Health and Well-Being).
+This Flutter-based mobile application is part of the "Smart Hospital Bed for Patients" project, developed during an Integrated Engineering Team Project at Addis Ababa Science and Technology University. The app enables caregivers to remotely monitor and control a smart hospital bed, enhancing patient care and mobility while aligning with Sustainable Development Goal 3 (Good Health and Well-Being).
 
 ## Features
 - **Real-Time Health Monitoring**: Displays patient vital signs (e.g., temperature, pressure) collected via bed-integrated sensors.
