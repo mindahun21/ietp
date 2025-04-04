@@ -29,9 +29,9 @@ The "Smart Hospital Bed for Patients" is an innovative healthcare solution devel
    - Arduino UNO processes sensor data and controls motor adjustments.
    - Cloud storage logs patient health data for analysis.
 
-**Team**
-*Developed by Group 44 at Addis Ababa Science and Technology University:*
-- Meron Weldu (Software Engineering) - Mobile App Lead
+# Team
+**Developed by Group 44 at Addis Ababa Science and Technology University:**
+- Meron Weldu (Software Engineering)
 - Mindahun Debebe (Software Engineering)
 - Elisha Abraham (Electrical Engineering)
 - Desta Elias (Electromechanical Engineering)
