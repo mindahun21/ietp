@@ -41,4 +41,4 @@ The "Smart Hospital Bed for Patients" is an innovative healthcare solution devel
 - Alazar Abraham (Chemical Engineering)
 - Hallelujah Ermias (Environmental Engineering)
 - Haylemaryam Daget (Electromechanical Engineering)
-Advisor: Mr. Getnet Assefa
+### Advisor: Mr. Getnet Assefa
