@@ -25,6 +25,9 @@ The "Smart Hospital Bed for Patients" is an innovative healthcare solution devel
    - Built with Flutter for cross-platform compatibility.
    - See [Mobile App README](Frontend/ietp_new/README.md) for details.
 
+3. **Backend And Admin Dashboard **
+   - Built with django (django template for dashboard and Dajngo Rest Framework for API development)
+   - See [Backend README] (
 3. **Control System**  
    - Arduino UNO processes sensor data and controls motor adjustments.
    - Cloud storage logs patient health data for analysis.
